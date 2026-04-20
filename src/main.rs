@@ -1,44 +1,36 @@
-#[derive(Debug)]
-enum EntryType {
-    Task,
-    Secret,
-}
-
-#[derive(Debug)]
-struct GuardianEntry {
-    id: u32,
-    title: String,
-    content: String,
-    entry_type: EntryType,
-    priority: u8,
-}
+use std::env;
 
 fn main() {
-    // Create the first task
-    let my_task = GuardianEntry {
-        id: 1,
-        title: String::from("Learn Rust Structs"),
-        content: String::from("Understand how to groupd data together."),
-        entry_type: EntryType::Task,
-        priority: 1,
-    };
+    // 1. Collect arguments from the terminal
+    let args: Vec<String> = env::args().collect();
 
-    // create a Secret
+    // 2. Check if the user provided enough commands
+    if args.len() < 2 {
+        println!("Usage: guardian <command> [argument...]\n");
+        return;
+    }
 
-    let my_secret = GuardianEntry {
-        id: 2,
-        title: String::from("My Password"),
-        content: String::from("123456"),
-        entry_type: EntryType::Secret,
-        priority: 5,
-    };
+    // 3. The brain matching on the command
+    let command = &args[1];
+    let argument = &args[2];
 
-    println!(
-        "My task ID: {:?}, My Task Title: {:?}, My Task Content: {:?}, My Task Entry Type {:?}, My Task Priority {:?}",
-        my_task.id, my_task.title, my_task.content, my_task.entry_type, my_task.priority
-    );
-    println!(
-        "My secret ID: {:?}, My Secret Title: {:?}, My Secret Content: {:?}, My Secret Entry Type {:?}, My Secret Priority {:?}",
-        my_secret.id, my_secret.title, my_secret.content, my_secret.entry_type, my_secret.priority
-    );
+    match command.as_str() {
+        "add" => {
+            print!("Action: Adding a new entry...{}", argument);
+        }
+
+        "list" => {
+            println!("Action: Listing all entries...");
+        }
+
+        "search" => {
+            println!("Action: Searching for entries...");
+        }
+        "delete" => {
+            println!("Action: Deleting entries...");
+        }
+        _ => {
+            println!("Unknown command: {}", command);
+        }
+    }
 }
